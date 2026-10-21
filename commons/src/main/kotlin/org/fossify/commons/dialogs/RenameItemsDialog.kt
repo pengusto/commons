@@ -7,7 +7,12 @@ import org.fossify.commons.databinding.DialogRenameItemsBinding
 import org.fossify.commons.extensions.*
 
 // used at renaming folders
-class RenameItemsDialog(val activity: BaseSimpleActivity, val paths: ArrayList<String>, val callback: () -> Unit) {
+class RenameItemsDialog(
+    val activity: BaseSimpleActivity,
+    val paths: ArrayList<String>,
+    val onItemRenamed: ((oldPath: String, newPath: String) -> Unit)? = null,
+    val callback: () -> Unit
+) {
     init {
         var ignoreClicks = false
         val view = DialogRenameItemsBinding.inflate(activity.layoutInflater, null, false)
@@ -76,6 +81,7 @@ class RenameItemsDialog(val activity: BaseSimpleActivity, val paths: ArrayList<S
 
                                 activity.renameFile(path, newPath, true) { success, _ ->
                                     if (success) {
+                                        onItemRenamed?.invoke(path, newPath)
                                         pathsCnt--
                                         if (pathsCnt == 0) {
                                             callback()
