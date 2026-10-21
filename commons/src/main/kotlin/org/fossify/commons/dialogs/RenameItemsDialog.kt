@@ -10,9 +10,12 @@ import org.fossify.commons.extensions.*
 class RenameItemsDialog(
     val activity: BaseSimpleActivity,
     val paths: ArrayList<String>,
-    val onItemRenamed: ((oldPath: String, newPath: String) -> Unit)? = null,
+    val onItemRenamed: ((oldPath: String, newPath: String) -> Unit)?,
     val callback: () -> Unit
 ) {
+    constructor(activity: BaseSimpleActivity, paths: ArrayList<String>, callback: () -> Unit) :
+        this(activity, paths, null, callback)
+
     init {
         var ignoreClicks = false
         val view = DialogRenameItemsBinding.inflate(activity.layoutInflater, null, false)
